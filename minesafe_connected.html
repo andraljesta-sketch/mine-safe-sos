@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MineSafe SOS</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f2f5f9;
+            color: #172033;
+        }
+
+        header {
+            background: #172033;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 25px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-radius: 14px;
+            box-shadow: 0 3px 10px #cccccc;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+        }
+
+        button {
+            padding: 13px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .sos {
+            background: #d32f2f;
+            color: white;
+            width: 100%;
+            font-size: 20px;
+        }
+
+        .fall {
+            background: #f0a000;
+            color: white;
+        }
+
+        .location {
+            background: #315efb;
+            color: white;
+        }
+
+        .reset {
+            background: #777;
+            color: white;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            background: #e8f5e9;
+            color: #18733a;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            background: #f5f5f5;
+            margin-top: 12px;
+        }
+
+        .emergency {
+            background: #ffebee;
+            color: #b71c1c;
+            border-left: 5px solid #d32f2f;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #18733a;
+            border-left: 5px solid #2e7d32;
+        }
+
+        .log {
+            background: #f5f7fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>⛑️ MineSafe SOS</h1>
+    <p>Smart Helmet & Accident Response System</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>🛡️ Safety Dashboard</h2>
+<div class="grid">
+
+    <div class="card">
+        <h3>🦺 Safety Status</h3>
+        <p style="font-size: 24px;">🟢 Normal</p>
+        <p>Worker safety monitoring active</p>
+    </div>
+
+    <div class="card">
+        <h3>📡 Helmet Sensor</h3>
+        <p style="font-size: 24px;">🟢 Connected</p>
+        <p>MPU6050 monitoring active</p>
+    </div>
+
+    <div class="card">
+        <h3>📍 Current Zone</h3>
+        <p style="font-size: 24px;">Mine Zone A</p>
+        <p>Tunnel 2</p>
+    </div>
+
+</div>
+        <p>Real-time prototype for SOS and accident response.</p>
+
+        <div id="systemStatus" class="status">
+            🟢 System Ready
+        </div>
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>👷 Worker Information</h2>
+
+            <p><b>Worker:</b> Worker 01</p>
+            <p><b>Helmet ID:</b> MS-1024</p>
+            <p><b>Helmet:</b> 🟢 Connected</p>
+            <p><b>Battery:</b> 🔋 86%</p>
+        </div>
+
+
+        <div class="card">
+            <h2>📍 Worker Location</h2>
+<div style="background:#eef2f7; padding:20px; border-radius:12px; text-align:center;">
+
+    <h3>🗺️ Mine Zone Map</h3>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+
+        <div style="background:white; padding:18px; border-radius:8px;">
+            🏭<br>
+            <b>Main Area</b>
+        </div>
+
+        <div style="background:white; padding:18px; border-radius:8px;">
+            ⛏️<br>
+            <b>Tunnel 1</b>
+        </div>
+
+        <div style="background:white; padding:18px; border-radius:8px;">
+            📍<br>
+            <b>Worker Zone</b>
+        </div>
+
+        <div style="background:white; padding:18px; border-radius:8px;">
+            🚑<br>
+            <b>Emergency Point</b>
+        </div>
+
+    </div>
+
+</div>
+
+            <p id="workerLocation">
+                Mine Zone A - Tunnel 2
+            </p>
+
+            <button class="location" onclick="updateLocation()">
+                Update Location
+            </button>
+
+            <p id="locationMessage"></p>
+        </div>
+
+
+        <div class="card">
+            <h2>⚠️ Fall Detection</h2>
+<div class="alert">
+    <p><b>📐 Accelerometer X:</b> <span id="accX">0.12 g</span></p>
+    <p><b>📐 Accelerometer Y:</b> <span id="accY">0.08 g</span></p>
+    <p><b>📐 Accelerometer Z:</b> <span id="accZ">1.01 g</span></p>
+    <p><b>🔄 Movement:</b> <span id="movement">Normal</span></p>
+</div>
+
+            <p>
+                Sensor:
+                <b>MPU6050 Accelerometer</b>
+            </p>
+
+            <p id="sensorStatus">
+                🟢 Monitoring
+            </p>
+
+            <button class="fall" onclick="simulateFall()">
+                Simulate Fall Detection
+            </button>
+        </div>
+
+
+        <div class="card">
+            <h2>🆘 Emergency SOS</h2>
+
+            <p>
+                Worker can manually send an emergency alert.
+            </p>
+
+            <button class="sos" onclick="sendSOS()">
+                SEND SOS ALERT
+            </button>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>🚨 Alert Center</h2>
+<div class="alert">
+    <p><b>🚨 Control Room:</b> <span id="responseControl">🟢 Monitoring</span></p>
+    <p><b>👷 Nearest Co-worker:</b> <span id="responseWorker">🟢 Available</span></p>
+    <p><b>🚑 Emergency Team:</b> <span id="responseTeam">🟢 Ready</span></p>
+</div>
+        <div id="alertMessage" class="alert success">
+            🟢 No active emergency alerts.
+        </div>
+
+        <p>
+            <b>Control Room:</b>
+            <span id="controlRoom">🟢 Ready</span>
+        </p>
+
+        <p>
+            <b>Nearest Co-worker:</b>
+            <span id="coworker">🟢 Ready</span>
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>📋 Incident Log</h2>
+
+        <div id="incidentLog" class="log">
+            System started. No incidents.
+        </div>
+
+        <button class="reset" onclick="resetSystem()">
+            Reset System
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>🔄 Emergency Response Flow</h2>
+
+        <p>1️⃣ Detect accident / receive SOS</p>
+        <p>2️⃣ Identify worker location</p>
+        <p>3️⃣ Alert Control Room</p>
+        <p>4️⃣ Alert nearest co-worker</p>
+        <p>5️⃣ Emergency team responds</p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function sendSOS() {
+    try {
+        const response = await fetch("/api/sos", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({worker_id: "W01"})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.message || "SOS failed");
+
+        showEmergency(data.incident, "🚨 SOS ALERT SENT");
+    } catch (error) {
+        showError(error);
+    }
+}
+
+
+async function simulateFall() {
+    try {
+        const response = await fetch("/api/fall", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({worker_id: "W01"})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.message || "Fall alert failed");
+
+        document.getElementById("accX").innerText = "2.84 g";
+        document.getElementById("accY").innerText = "3.17 g";
+        document.getElementById("accZ").innerText = "0.42 g";
+        document.getElementById("movement").innerText = "⚠️ Sudden Movement";
+        document.getElementById("sensorStatus").innerHTML =
+            "🔴 POSSIBLE FALL DETECTED";
+
+        showEmergency(data.incident, "⚠️ POSSIBLE ACCIDENT DETECTED");
+    } catch (error) {
+        showError(error);
+    }
+}
+
+
+async function updateLocation() {
+    try {
+        // Cycle through the three demo locations.
+        const locations = [
+            "Mine Zone A - Tunnel 2",
+            "Mine Zone B - Tunnel 1",
+            "Mine Zone C - Shaft Area"
+        ];
+
+        const current =
+            document.getElementById("workerLocation").innerText;
+
+        let index = locations.indexOf(current);
+        index = (index + 1) % locations.length;
+
+        const response = await fetch("/api/location", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({location_index: index})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.message || "Location update failed");
+
+        document.getElementById("workerLocation").innerText =
+            data.worker.zone;
+
+        document.getElementById("locationMessage").innerHTML =
+            "📍 Location updated successfully.";
+    } catch (error) {
+        showError(error);
+    }
+}
+
+
+async function resetSystem() {
+    try {
+        const response = await fetch("/api/reset", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"}
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.message || "Reset failed");
+
+        document.getElementById("systemStatus").innerHTML =
+            "🟢 System Ready";
+
+        document.getElementById("sensorStatus").innerHTML =
+            "🟢 Monitoring";
+
+        document.getElementById("alertMessage").className =
+            "alert success";
+
+        document.getElementById("alertMessage").innerHTML =
+            "🟢 No active emergency alerts.";
+
+        document.getElementById("controlRoom").innerHTML =
+            "🟢 Ready";
+
+        document.getElementById("coworker").innerHTML =
+            "🟢 Ready";
+
+        document.getElementById("responseControl").innerText =
+            "🟢 Monitoring";
+
+        document.getElementById("responseWorker").innerText =
+            "🟢 Available";
+
+        document.getElementById("responseTeam").innerText =
+            "🟢 Ready";
+
+        document.getElementById("incidentLog").innerHTML =
+            "System reset. No active incidents.";
+
+        document.getElementById("accX").innerText = "0.12 g";
+        document.getElementById("accY").innerText = "0.08 g";
+        document.getElementById("accZ").innerText = "1.01 g";
+        document.getElementById("movement").innerText = "Normal";
+    } catch (error) {
+        showError(error);
+    }
+}
+
+
+function showEmergency(incident, title) {
+    document.getElementById("systemStatus").innerHTML =
+        "🔴 Emergency Active";
+
+    document.getElementById("alertMessage").className =
+        "alert emergency";
+
+    const nearest = incident.nearest_coworker
+        ? incident.nearest_coworker.name +
+          " (" + incident.nearest_coworker.distance_m + " m)"
+        : "No co-worker available";
+
+    document.getElementById("alertMessage").innerHTML =
+        "<b>" + title + "</b><br><br>" +
+        "Control Room has been notified.<br>" +
+        "Nearest co-worker has been alerted.<br>" +
+        "Emergency team has been dispatched.<br>" +
+        "📍 Location: " + incident.zone + "<br>" +
+        "👷 Nearest co-worker: " + nearest;
+
+    document.getElementById("controlRoom").innerHTML =
+        "🔴 NOTIFIED";
+
+    document.getElementById("coworker").innerHTML =
+        "🔴 ALERTED";
+
+    document.getElementById("responseControl").innerText =
+        "🔴 NOTIFIED";
+
+    document.getElementById("responseWorker").innerText =
+        "🔴 ALERTED";
+
+    document.getElementById("responseTeam").innerText =
+        "🟠 DISPATCHED";
+
+    const oldLog = document.getElementById("incidentLog").innerHTML;
+
+    document.getElementById("incidentLog").innerHTML =
+        "🚨 <b>" + incident.type + "</b><br>" +
+        "Time: " + incident.time + "<br>" +
+        "Worker: " + incident.worker_name + "<br>" +
+        "Location: " + incident.zone + "<br>" +
+        "Nearest co-worker: " + nearest +
+        "<hr>" + oldLog;
+}
+
+
+function showError(error) {
+    console.error(error);
+
+    document.getElementById("systemStatus").innerHTML =
+        "🟠 Backend Connection Error";
+
+    document.getElementById("alertMessage").className =
+        "alert emergency";
+
+    document.getElementById("alertMessage").innerHTML =
+        "⚠️ Could not communicate with the Python backend.<br><br>" +
+        "Make sure app.py is running.";
+}
+
+
+// Load current backend state when page opens.
+async function loadStatus() {
+    try {
+        const response = await fetch("/api/status");
+        const data = await response.json();
+
+        if (!data.success) return;
+
+        document.getElementById("workerLocation").innerText =
+            data.worker.zone;
+
+        if (data.active_emergency) {
+            showEmergency(
+                data.active_emergency,
+                data.active_emergency.type === "SOS BUTTON"
+                    ? "🚨 SOS ALERT ACTIVE"
+                    : "⚠️ POSSIBLE ACCIDENT ACTIVE"
+            );
+        }
+    } catch (error) {
+        console.log("Backend status not available yet.");
+    }
+}
+
+loadStatus();
+
+</script>
+
+</body>
+</html>
